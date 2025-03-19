@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Download, Share2, Heart, Clock, Wine } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,6 +10,7 @@ export interface DrinkDetails {
   steps: string[];
   timeToMake: string;
   imageUrl: string;
+  description?: string;
 }
 
 interface DrinkResultProps {
@@ -30,13 +30,11 @@ const DrinkResult: React.FC<DrinkResultProps> = ({ drink, className }) => {
   };
 
   const shareResult = () => {
-    // In a real app, we would implement actual sharing functionality
     toast.success("Sharing functionality coming soon!");
   };
 
   const downloadImage = async () => {
     try {
-      // Create a canvas to combine the image and text
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       
@@ -45,22 +43,20 @@ const DrinkResult: React.FC<DrinkResultProps> = ({ drink, className }) => {
         return;
       }
       
-      // Load the image first
       const img = new Image();
-      img.crossOrigin = "anonymous"; // This is needed for images from different origins
+      img.crossOrigin = "anonymous";
       
       img.onload = () => {
-        // Set canvas dimensions - make it wide enough for text and image
         const margin = 40;
         const imgWidth = 500;
         const imgHeight = 500;
         const totalWidth = imgWidth + margin * 2;
         
-        // Calculate text space needed
         const textContent = [
           `${drink.name}`,
           `${drink.isAlcoholic ? "Alcoholic" : "Non-Alcoholic"} - ${drink.timeToMake}`,
           "",
+          ...(drink.description ? [`WHY THIS DRINK:`, `${drink.description}`, ""] : []),
           "INGREDIENTS:",
           ...drink.ingredients.map(ing => `• ${ing}`),
           "",
@@ -72,32 +68,24 @@ const DrinkResult: React.FC<DrinkResultProps> = ({ drink, className }) => {
         const textHeight = textContent.length * lineHeight;
         const totalHeight = imgHeight + textHeight + margin * 3;
         
-        // Set canvas size
         canvas.width = totalWidth;
         canvas.height = totalHeight;
         
-        // Fill background
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Draw the image centered
         ctx.drawImage(img, margin, margin, imgWidth, imgHeight);
         
-        // Set up text style
         ctx.fillStyle = "#000000";
         ctx.font = "bold 20px Arial";
         
-        // Draw title
         ctx.fillText(textContent[0], margin, imgHeight + margin * 2);
         
-        // Draw subtitle
         ctx.font = "16px Arial";
         ctx.fillText(textContent[1], margin, imgHeight + margin * 2 + lineHeight);
         
-        // Draw ingredients and steps
-        ctx.font = "14px Arial";
         textContent.slice(2).forEach((line, i) => {
-          if (line.startsWith("INGREDIENTS:") || line.startsWith("STEPS:")) {
+          if (line.startsWith("INGREDIENTS:") || line.startsWith("STEPS:") || line.startsWith("WHY THIS DRINK:")) {
             ctx.font = "bold 16px Arial";
           } else {
             ctx.font = "14px Arial";
@@ -110,7 +98,6 @@ const DrinkResult: React.FC<DrinkResultProps> = ({ drink, className }) => {
           );
         });
         
-        // Convert to data URL and download
         const dataUrl = canvas.toDataURL("image/png");
         const link = document.createElement("a");
         link.download = `${drink.name.replace(/\s+/g, "-").toLowerCase()}.png`;
@@ -153,6 +140,13 @@ const DrinkResult: React.FC<DrinkResultProps> = ({ drink, className }) => {
             </div>
             <h2 className="text-2xl font-medium">{drink.name}</h2>
           </div>
+
+          {drink.description && (
+            <div>
+              <h3 className="text-lg font-medium mb-2">Why This Drink</h3>
+              <p className="text-muted-foreground">{drink.description}</p>
+            </div>
+          )}
 
           <div>
             <h3 className="text-lg font-medium mb-2">Ingredients</h3>
