@@ -2,7 +2,7 @@
 import React from "react";
 import { ThemeProvider } from "@/context/ThemeContext";
 import ThemeToggle from "@/components/ThemeToggle";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -57,7 +57,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="px-2 h-8"
+                      className="px-2 h-8 flex items-center gap-1"
                       asChild
                     >
                       <a
@@ -66,12 +66,38 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         rel="noopener noreferrer"
                         aria-label="Warpcast Profile"
                       >
+                        <span>Warpcast</span>
                         <ExternalLink size={16} />
                       </a>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Visit me on Warpcast</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="px-2 h-8 flex items-center gap-1"
+                      asChild
+                    >
+                      <a
+                        href="https://youtube.com/playlist?list=PLqchICbseuRpn8PqBDDXwnpAp5MI-9-zN&si=_HIPzt7cMObwWsuX"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="YouTube Podcast"
+                      >
+                        <span>Podcast</span>
+                        <Youtube size={16} />
+                      </a>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Check out my podcast on YouTube</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
