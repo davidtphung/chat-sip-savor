@@ -2,6 +2,9 @@
 import React from "react";
 import { ThemeProvider } from "@/context/ThemeContext";
 import ThemeToggle from "@/components/ThemeToggle";
+import { ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </main>
         <footer className="w-full border-t border-border/40 py-4 px-6">
           <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-            <p>
+            <p className="flex items-center justify-center gap-2 flex-wrap">
               Presented by{" "}
               <a
                 href="https://x.com/davidtphung"
@@ -48,6 +51,30 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               >
                 NLT143
               </a>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="px-2 h-8"
+                      asChild
+                    >
+                      <a
+                        href="https://warpcast.com/davidtphung"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Warpcast Profile"
+                      >
+                        <ExternalLink size={16} />
+                      </a>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Visit me on Warpcast</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </p>
           </div>
         </footer>
